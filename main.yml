@@ -1,0 +1,60 @@
+---
+- host: localhost
+  tasks:
+    - name: Install a list of packages
+      ansible.builtin.apt:
+        pkg:
+          - chromium
+          - curl
+          - dbeaver
+          - docker-compose
+          - docker-engine
+          - firefox
+          - geany
+          - git
+          - golang
+          - nvim
+          - podman
+          - podman-compose
+          - wget
+      become: yes
+
+    - name: Add user 
+      ansible.builtin.command:
+        cmd: control sudowheel enabled
+      become: yes
+
+    - name: Install repo Flathub
+      community.general.flatpak_remote:
+        name: flathub
+        state: present
+        flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+      become: yes
+
+    - name: Install Flatpak apps
+      community.general.flatpak:
+        name:
+          - com.github.tchx84.Flatseal
+          - org.videolan.VLC
+          - com.getpostman.Postman
+        state: present
+        remote: flathub
+      become: yes
+
+    - name: Set nvim config file
+      copy:
+        src: ./config/init.vim
+        dest: "/home/{{ ansible_user }}/.config/nvim/init.vim"
+
+    - name: Copy wallpaper
+      copy:
+        src: ./config/wallpaper.jpg
+        dest: "/home/{{ ansible_user }}/wallpaper.jpg"
+
+    - name: Set wallpaper
+      ansible.builtin.command:
+        cmd: "gsetting set org.gnome.desktop.background picture-uri file:///home/{{ ansible_user }}/wallpaper.jpg"
+          
+    - name: Set dark wallpaper
+      ansible.builtin.command:
+        cmd: "gsetting set org.gnome.desktop.background picture-uri-dark file:///home/{{ ansible_user }}/wallpaper.jpg"
