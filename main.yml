@@ -21,6 +21,9 @@
           - meson
           - cmake
           - tmux
+          - node
+          - gopls
+          - golangci-lint 
       become: yes
 
     - name: Add user 
@@ -49,6 +52,10 @@
       copy:
         src: ./config/init.vim
         dest: "/home/{{ ansible_user }}/.config/nvim/init.vim"
+
+    - name: Set geany colorschemes
+      ansible.builtin.command:
+        cmd: "cp -r ./colorschemes /home/{{ ansible_user }}/.config/geany"
 
     - name: Copy wallpaper
       copy:
