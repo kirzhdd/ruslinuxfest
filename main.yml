@@ -17,6 +17,10 @@
           - podman
           - podman-compose
           - wget
+          - make
+          - meson
+          - cmake
+          - tmux
       become: yes
 
     - name: Add user 
