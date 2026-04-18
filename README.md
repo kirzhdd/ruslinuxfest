@@ -1,0 +1,2 @@
+# ruslinuxfest
+ansible playbook
