@@ -54,8 +54,10 @@
         dest: "/home/{{ ansible_user }}/.config/nvim/init.vim"
 
     - name: Set geany colorschemes
-      ansible.builtin.command:
-        cmd: "cp -r ./colorschemes /home/{{ ansible_user }}/.config/geany"
+      copy:
+        src: ./colorschemes
+        dest: "/home/{{ ansible_user }}/.config/geany"
+
 
     - name: Copy wallpaper
       copy:
